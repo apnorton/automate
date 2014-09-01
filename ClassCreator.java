@@ -7,8 +7,9 @@ import java.util.regex.*;
 public class ClassCreator {
   //Regex parsing tools
   //The below regex describes the format: "<category>: <access char> <type> <name>(<arglist-optional>)"
-  private static final String linePattern = "(?<cat>field|method|constructor):\\s*(?<acs>[+x-])\\s*(?<typ>\\w*)\\s*(?<nam>\\w*)\\s*(?<args>\\(.*?\\))?\\s*";
-  private static final Pattern p = Pattern.compile(linePattern);
+  private static final String linePatternStr = "(?<cat>field|method|constructor):\\s*(?<acs>[+x-])\\s*(?<typ>\\w*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
+  private static final Pattern linePattern = Pattern.compile(linePatternStr);
+  private static final Pattern argPattern = Pattern.compile("[,\\s]*(?<typ>\\w+)\\s*(?<nam>\\w+)");
   
   //Globals
   private static List<Field> fields = new ArrayList<Field>();
@@ -77,7 +78,7 @@ public class ClassCreator {
   
   private static void parseLine(String s, int num) throws Exception {
     //Generate regex matcher for parsing line.
-    Matcher m = p.matcher(s);
+    Matcher m = linePattern.matcher(s);
     
     if(!m.matches()) throw new Exception("Parse error, line " + num);
     
@@ -94,14 +95,23 @@ public class ClassCreator {
     }
     else if (category.equals("method")) { //Add a method to the list of methods
       List<Var> args = parseArgs(argString);
-      Method newMethod = new Method(getAccessString(accessChar), type, name);
+      Method newMethod = new Method(getAccessString(accessChar), type, name, args);
       methods.add(newMethod);
     }
     //TODO: deal with constructors
   } 
   
-  private static String parseArgs(String args) {
+  private static List<Var> parseArgs(String argStr) {
+    List<Var> args = new ArrayList<Var>();
+    Matcher m = argPattern.matcher(argStr);
     
+    //Add Var's to the list until you can't find any more
+    while (m.find()) {
+      Var newVar = new Var(m.group("typ"), m.group("nam"));
+      args.add(newVar);
+    }
+    
+    return args;
   }
 
   //A variable consists of a name and a datatype

@@ -1,5 +1,9 @@
 package automate;
 
+/*
+ * This is just a test for the regex string I am using for parsing each line of input.
+ */
+ 
 import java.util.*;
 import java.io.*;
 import java.util.regex.*;

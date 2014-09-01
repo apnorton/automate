@@ -1,2 +1,2 @@
 field: x String myString
-method: + int fib(int mine)
+method: + int fib(int n)
