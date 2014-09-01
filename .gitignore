@@ -1,3 +1,6 @@
+# I don't care about Java class files--I just want code uploaded
+*.class
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
