@@ -27,7 +27,7 @@ Each line of the program has five "groups", designated below:
 `<category>: <access character> <type> <name>(<optional method arguments>)`
 
 The `<category>` must be either "field" or "method."  
-The `<access character>` is one of [+x-], where + corresponds to "public" access, x to "protected" access, and - to "private" access.  
+The `<access character>` is one of `[+x-]`, where + corresponds to "public" access, x to "protected" access, and - to "private" access.  
 The `<type>` is a classname or primative type.  (Note: The program doesn't check to see if a class is real, it just assumes you've typed correctly.)  
 The `<name>` is the name of the field or method.  
 In parentheses following the name, methods arguments (type and name) can be listed in comma-separated format.
