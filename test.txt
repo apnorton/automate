@@ -1,2 +1,4 @@
 field: x String myString
+field: - String name
 method: + int fib(int n)
+method: + void killIndex(int n, String name)

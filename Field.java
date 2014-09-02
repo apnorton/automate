@@ -16,6 +16,9 @@ public class Field {
     this(access, new Var(type, name));
   }
   
+  public boolean isPrimative() { return variable.isPrimative(); }
+  public String getNull() { return variable.getNull(); }
+  
   @Override 
   public String toString() { return access + " " + variable; }
 }

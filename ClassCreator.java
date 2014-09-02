@@ -14,6 +14,7 @@ public class ClassCreator {
   //Globals
   private static List<Field> fields = new ArrayList<Field>();
   private static List<Method> methods = new ArrayList<Method>();
+  private static String tab = "  "; //Tab width = 2 spaces.
   
   public static void main(String[] args) {
     String classname;
@@ -44,6 +45,14 @@ public class ClassCreator {
       readFile(fin);
       System.out.println("Input file parsed.");
       writeTopMatter(pw, classname);
+      writeFields(pw);
+      pw.println(); //Skip a between fields and methods
+      
+      writeMethods(pw);
+      
+      //Close out the class definition
+      pw.println("\n}");
+      
       pw.close();
     }
     catch (Exception ex) {  //Catch-all.
@@ -66,7 +75,46 @@ public class ClassCreator {
     pw.println("\n/* File: " + classname + ".java\n  * Author:\n  * Email:\n  * Desciption:\n  */\n");
     
     //Class declaration
-    pw.println("public class " + classname + " {\n");
+    pw.println("public class " + classname + " {");
+  }
+  
+  private static void writeFields(PrintWriter pw) {    
+    //Print out all fields
+    for (Field f : fields) {
+      //Indent, code, and semicolon!
+      pw.println(tab + f.toString() + ";");
+    }
+  }
+  
+  //Write a method skeleton for 
+  private static void writeMethods(PrintWriter pw) {
+    for(Method m : methods) {
+      pw.println(methodToCode(m));
+      pw.println();
+    }
+  }
+  
+  private static String methodToCode(Method m) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(tab); sb.append(m.toString()); sb.append(" {\n");
+    
+    if (!m.isVoid()) {
+      sb.append(tab + tab + "return ");
+      sb.append(m.getNull()); //return the "null"/"neutral" element for this method
+      sb.append(';');
+    }
+    sb.append('\n' + tab + "}");
+    
+    return sb.toString();
+  }
+  
+  //Write common overrides (toString() and equals());
+  private static void writeOverrides() {
+  }
+  
+  //Writes a getter/setter for all 
+  private static void writeGetSet() {
+    
   }
   
   //Get all user input.

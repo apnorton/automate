@@ -20,9 +20,24 @@ public class Method {
     this(access, type, name, new ArrayList<Var>());
   }
   
+  //Neutral return for a function is the same as the neutral value of a variable of the same type
+  public String getNull() { return (new Var(type, name)).getNull(); }
+  
+  //Tests for void return type
+  public boolean isVoid() { return this.type.equals("void"); }
+  
   @Override
   public String toString() { 
-    String argStr = args.toString();
+    StringBuilder argStr = new StringBuilder();
+    
+    if (args.size() > 0) {
+      for (int i = 0; i < args.size() - 1; i++) {
+        argStr.append(args.get(i).toString());
+        argStr.append(", ");
+      }
+      //append the last element of the list *without* a comma following it.
+      argStr.append(args.get(args.size()-1).toString()); 
+    }
     
     return String.format("%s %s %s(%s)", access, type, name, argStr);
   }
