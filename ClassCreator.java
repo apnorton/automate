@@ -52,11 +52,14 @@ public class ClassCreator {
       
       //Body of class
       writeMethods(pw);
+      writeToString(pw);
+      writeEquals(classname, pw);
       
       //Getters and Setters
       writeGetters(pw);
       pw.println();
       writeSetters(pw);
+      pw.println();
       
       //Close out the class definition
       pw.println("}");
@@ -80,13 +83,14 @@ public class ClassCreator {
     pw.println("import java.util.*;");
     
     //Comment header
-    pw.println("\n/* File: " + classname + ".java\n  * Author:\n  * Email:\n  * Desciption:\n  */\n");
+    pw.println("\n/*\n * File: " + classname + ".java\n * Author:\n * Email:\n * Desciption:\n */\n");
     
     //Class declaration
     pw.println("public class " + classname + " {");
   }
   
-  private static void writeFields(PrintWriter pw) {    
+  private static void writeFields(PrintWriter pw) {   
+    pw.println(tab + "//////  Fields:  //////");
     //Print out all fields
     for (Field f : fields) {
       //Indent, code, and semicolon!
@@ -96,6 +100,7 @@ public class ClassCreator {
   
   //Write a method skeleton for 
   private static void writeMethods(PrintWriter pw) {
+    pw.println(tab + "//////  Methods:  //////");
     for(Method m : methods) {
       pw.println(methodToCode(m));
       pw.println();
@@ -116,13 +121,61 @@ public class ClassCreator {
     return sb.toString();
   }
   
-  //Write common overrides (toString() and equals());
-  private static void writeOverrides() {
+  //Creates a basic "toString" method
+  private static void writeToString(PrintWriter pw) {
+    if (fields.size() == 0) return; //Don't write a toString method if there's no fields!
+    
+    pw.println(tab + "//////  ToString:  //////");
+    pw.println(tab + "@Override");
+    pw.println(tab + "public String toString() {");
+    pw.print(tab + tab + "return (\"[ ");
+    
+    for (Field f : fields) {
+      pw.print(f.getName() + "=\" + " + f.getName() + " + \"");
+    }
+    pw.println("]\");");
+    pw.println(tab + "}\n");
+  }
+  
+  //Creates a basic "equals" method
+  private static void writeEquals(String classname, PrintWriter pw) {
+    if (fields.size() == 0) return; //Don't write an equals method if there's no fields!
+    
+    //Boilerplate
+    pw.println(tab + "//////  Equals:  //////");
+    pw.println(tab + "@Override");
+    pw.println(tab + "public boolean equals(Object o) {");
+    pw.println(tab + tab + "//Take care of trivialities:");
+    pw.println(tab + tab + "if (o == null || this.getClass() != o.getClass()) return false;\n");
+    
+    pw.println(tab + tab + classname + " that = (" + classname + ") o; //Cast to current type");
+    
+    //Set up a return value
+    pw.print(tab + tab + "boolean retVal = ");
+    
+    //a.equals(b) if and only if all fields of a match all fields of b
+    Iterator<Field> fI = fields.iterator();
+    Field f = null;
+    while(fI.hasNext()) {
+      f = fI.next();
+      
+      if (f.isPrimative())
+        pw.print("(this." + f.getName() + " == that." + f.getName() + ")");
+      else
+        pw.print("((this." + f.getName() + ").equals(that." + f.getName() + "))");
+      
+      if (fI.hasNext()) 
+        pw.print(" || ");
+    }
+    pw.println(";\n");
+    
+    pw.println(tab + tab + "return retVal;");
+    pw.println(tab + "}\n");
   }
   
   //Writes a getter/setter for all 
   private static void writeGetters(PrintWriter pw) {
-    pw.println(tab + "//Getters:");
+    pw.println(tab + "//////  Getters:  //////");
     for (Field f : fields) {
       if (f.getAccess().equals("public")) continue; //I don't need get/set for public variables!
       
@@ -133,14 +186,14 @@ public class ClassCreator {
   }
   
   private static void writeSetters(PrintWriter pw) {
-    pw.println(tab + "//Setters:");
+    pw.println(tab + "//////  Setters:  //////");
     for (Field f : fields) {
       if (f.getAccess().equals("public")) continue; //I don't need get/set for public variables!
       
       //Method name is "set" + (capitalized field name)
       String methodName = "set" + Character.toUpperCase(f.getName().charAt(0)) + (f.getName().substring(1));
-      pw.println(tab + "public " + f.getType() + " " + methodName + "(" + f.getType() + " " + f.getName() + ") {");
-      pw.println(tab + tab + "this." + f.getName() + " = " + f.getName() + ";\n" + tab + "}\n");
+      pw.print(tab + "public " + f.getType() + " " + methodName + "(" + f.getType() + " " + f.getName() + ") {");
+      pw.println(" this." + f.getName() + " = " + f.getName() + "; }");
     }
   }
   
