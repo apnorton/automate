@@ -16,6 +16,10 @@ public class Field {
     this(access, new Var(type, name));
   }
   
+  public String getType() { return variable.getType(); }
+  public String getName() { return variable.getName(); }
+  public String getAccess() { return access; }
+  
   public boolean isPrimative() { return variable.isPrimative(); }
   public String getNull() { return variable.getNull(); }
   

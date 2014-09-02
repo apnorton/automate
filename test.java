@@ -18,5 +18,17 @@ public class test {
 
   }
 
+  //Getters:
+  public String getMyString() { return this.myString; }
+  public String getName() { return this.name; }
+
+  //Setters:
+  public String setMyString(String myString) {
+    this.myString = myString;
+  }
+
+  public String setName(String name) {
+    this.name = name;
+  }
 
 }

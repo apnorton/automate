@@ -44,14 +44,22 @@ public class ClassCreator {
     try {
       readFile(fin);
       System.out.println("Input file parsed.");
+      
+      //Write file header
       writeTopMatter(pw, classname);
       writeFields(pw);
       pw.println(); //Skip a between fields and methods
       
+      //Body of class
       writeMethods(pw);
       
+      //Getters and Setters
+      writeGetters(pw);
+      pw.println();
+      writeSetters(pw);
+      
       //Close out the class definition
-      pw.println("\n}");
+      pw.println("}");
       
       pw.close();
     }
@@ -113,8 +121,27 @@ public class ClassCreator {
   }
   
   //Writes a getter/setter for all 
-  private static void writeGetSet() {
-    
+  private static void writeGetters(PrintWriter pw) {
+    pw.println(tab + "//Getters:");
+    for (Field f : fields) {
+      if (f.getAccess().equals("public")) continue; //I don't need get/set for public variables!
+      
+      //Method name is "get" + (capitalized field name)
+      String methodName = "get" + Character.toUpperCase(f.getName().charAt(0)) + (f.getName().substring(1));
+      pw.println(tab + "public " + f.getType() + " " + methodName + "() { return this." + f.getName() + "; }");
+    }
+  }
+  
+  private static void writeSetters(PrintWriter pw) {
+    pw.println(tab + "//Setters:");
+    for (Field f : fields) {
+      if (f.getAccess().equals("public")) continue; //I don't need get/set for public variables!
+      
+      //Method name is "set" + (capitalized field name)
+      String methodName = "set" + Character.toUpperCase(f.getName().charAt(0)) + (f.getName().substring(1));
+      pw.println(tab + "public " + f.getType() + " " + methodName + "(" + f.getType() + " " + f.getName() + ") {");
+      pw.println(tab + tab + "this." + f.getName() + " = " + f.getName() + ";\n" + tab + "}\n");
+    }
   }
   
   //Get all user input.

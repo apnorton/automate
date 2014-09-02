@@ -24,7 +24,7 @@ public class Method {
   public String getNull() { return (new Var(type, name)).getNull(); }
   
   //Tests for void return type
-  public boolean isVoid() { return this.type.equals("void"); }
+  public boolean isVoid() { return this.type.equals("void") || this.type.equals(""); } //The latter condition is when this method is a constructor
   
   @Override
   public String toString() { 
