@@ -192,7 +192,7 @@ public class ClassCreator {
       
       //Method name is "set" + (capitalized field name)
       String methodName = "set" + Character.toUpperCase(f.getName().charAt(0)) + (f.getName().substring(1));
-      pw.print(tab + "public " + f.getType() + " " + methodName + "(" + f.getType() + " " + f.getName() + ") {");
+      pw.print(tab + "public void " + methodName + "(" + f.getType() + " " + f.getName() + ") {");
       pw.println(" this." + f.getName() + " = " + f.getName() + "; }");
     }
   }

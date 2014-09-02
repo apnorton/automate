@@ -11,6 +11,7 @@ public class test {
   //////  Fields:  //////
   protected String myString;
   private String name;
+  private int someNumber;
 
   //////  Methods:  //////
   public int fib(int n) {
@@ -21,10 +22,14 @@ public class test {
 
   }
 
+  public String randomString() {
+    return new String();
+  }
+
   //////  ToString:  //////
   @Override
   public String toString() {
-    return ("[ myString=" + myString + "name=" + name + "]");
+    return ("[ myString=" + myString + "name=" + name + "someNumber=" + someNumber + "]");
   }
 
   //////  Equals:  //////
@@ -34,7 +39,7 @@ public class test {
     if (o == null || this.getClass() != o.getClass()) return false;
 
     test that = (test) o; //Cast to current type
-    boolean retVal = ((this.myString).equals(that.myString)) || ((this.name).equals(that.name));
+    boolean retVal = ((this.myString).equals(that.myString)) || ((this.name).equals(that.name)) || (this.someNumber == that.someNumber);
 
     return retVal;
   }
@@ -42,9 +47,11 @@ public class test {
   //////  Getters:  //////
   public String getMyString() { return this.myString; }
   public String getName() { return this.name; }
+  public int getSomeNumber() { return this.someNumber; }
 
   //////  Setters:  //////
-  public String setMyString(String myString) { this.myString = myString; }
-  public String setName(String name) { this.name = name; }
+  public void setMyString(String myString) { this.myString = myString; }
+  public void setName(String name) { this.name = name; }
+  public void setSomeNumber(int someNumber) { this.someNumber = someNumber; }
 
 }
