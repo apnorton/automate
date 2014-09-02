@@ -7,7 +7,7 @@ import java.util.regex.*;
 public class ClassCreator {
   //Regex parsing tools
   //The below regex describes the format: "<category>: <access char> <type> <name>(<arglist-optional>)"
-  private static final String linePatternStr = "(?<cat>field|method|constructor):\\s*(?<acs>[+x-])\\s*(?<typ>\\w*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
+  private static final String linePatternStr = "(?<cat>field|method):\\s*(?<acs>[+x-])\\s*(?<typ>\\w*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
   private static final Pattern linePattern = Pattern.compile(linePatternStr);
   private static final Pattern argPattern = Pattern.compile("[,\\s]*(?<typ>\\w+)\\s*(?<nam>\\w+)");
   
@@ -48,7 +48,9 @@ public class ClassCreator {
       //Write file header
       writeTopMatter(pw, classname);
       writeFields(pw);
-      pw.println(); //Skip a between fields and methods
+      pw.println(); //Skip a between fields and constructor
+      writeConstructor(classname, pw);
+      
       
       //Body of class
       writeMethods(pw);
@@ -98,7 +100,32 @@ public class ClassCreator {
     }
   }
   
-  //Write a method skeleton for 
+  //Writes a basic constructor, where all fields are specified.
+  private static void writeConstructor(String classname, PrintWriter pw) {
+    //Print start of constructor
+    pw.println(tab + "//////  Constructor:  //////");
+    pw.print(tab + "public " + classname + "(");
+
+    //Print constructor arguments
+    if (fields.size() > 0) {
+      for (int i = 0; i < fields.size() - 1; i++) {
+        pw.print(fields.get(i).getVar().toString());
+        pw.print(", ");
+      }
+      //append the last element of the list *without* a comma following it.
+      pw.print(fields.get(fields.size()-1).getVar().toString()); 
+    }
+    pw.println(") {");
+    
+    //Print all the assignments within the constructor
+    for(Field f : fields)
+      pw.println(tab + tab + "this." + f.getName() + " = " + f.getName() + ";");
+    
+    pw.println(tab + "}");
+    pw.println();
+  }
+  
+  //Write a method skeleton for all methods
   private static void writeMethods(PrintWriter pw) {
     pw.println(tab + "//////  Methods:  //////");
     for(Method m : methods) {

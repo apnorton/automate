@@ -1,6 +1,0 @@
-field: x String myString
-field: - String name
-field: - int someNumber
-method: + int fib(int n)
-method: + void killIndex(int n, String name)
-method: + String randomString()
