@@ -42,6 +42,9 @@ public class ClassCreator {
     //Actually attempt to parse the file
     try {
       readFile(fin);
+      System.out.println("Input file parsed.");
+      writeTopMatter(pw, classname);
+      pw.close();
     }
     catch (Exception ex) {  //Catch-all.
       System.out.println("Exception thrown.  All we know is:");
@@ -54,6 +57,19 @@ public class ClassCreator {
     
   }
   
+  //Writes the "top matter"--common imports, comment template, and open class
+  private static void writeTopMatter(PrintWriter pw, String classname) {
+    //Imports
+    pw.println("import java.util.*;");
+    
+    //Comment header
+    pw.println("\n/* File: " + classname + ".java\n  * Author:\n  * Email:\n  * Desciption:\n  */\n");
+    
+    //Class declaration
+    pw.println("public class " + classname + " {\n");
+  }
+  
+  //Get all user input.
   private static void readFile(Scanner fin) throws Exception {
     int lineNum = 0;
     while (fin.hasNext()) {
@@ -63,19 +79,8 @@ public class ClassCreator {
       parseLine(currLine, lineNum);
     }
   }
-  
-  private static String getAccessString(String accessChar) {
-    String accessStr;
-    if (accessChar.equals("-")) 
-      accessStr = "private";
-    else if (accessChar.equals("x")) 
-      accessStr = "protected";
-    else
-      accessStr = "public";
-      
-    return accessStr;
-  }
-  
+    
+  //Takes in one line of input and appends the data I care about to the appropriate lists
   private static void parseLine(String s, int num) throws Exception {
     //Generate regex matcher for parsing line.
     Matcher m = linePattern.matcher(s);
@@ -101,6 +106,7 @@ public class ClassCreator {
     //TODO: deal with constructors
   } 
   
+  //Takes in a string, like "int test, long mine" and converts to a list of Vars
   private static List<Var> parseArgs(String argStr) {
     List<Var> args = new ArrayList<Var>();
     Matcher m = argPattern.matcher(argStr);
@@ -112,5 +118,18 @@ public class ClassCreator {
     }
     
     return args;
+  }
+  
+  // Converts the +x- character to a string "public," "private," or "protected."
+  private static String getAccessString(String accessChar) {
+    String accessStr;
+    if (accessChar.equals("-")) 
+      accessStr = "private";
+    else if (accessChar.equals("x")) 
+      accessStr = "protected";
+    else
+      accessStr = "public";
+      
+    return accessStr;
   }
 }
