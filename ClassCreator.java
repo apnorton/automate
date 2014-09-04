@@ -20,6 +20,7 @@ public class ClassCreator {
     String classname;
     Scanner fin = null;
     PrintWriter pw = null;
+    File textfile = null;
     
     //Check for command line args, then find the class name
     if (args.length != 1) {
@@ -29,16 +30,23 @@ public class ClassCreator {
     }
     classname = args[0];
     
+    classname = classname.replaceFirst("\\.txt$", "");
+    textfile = new File(classname + ".txt");
+    
     //Set up reader/writers.    
     try {
-      fin = new Scanner(new File(classname + ".txt"));
+      fin = new Scanner(textfile);
       pw = new PrintWriter(classname + ".java");
-    }
-    catch (Exception ex) {
+    } catch (FileNotFoundException ex) {
+      System.out.println("The file " + textfile.getAbsolutePath() + " does not exist.");
+      System.exit(1);
+    } catch (Exception ex) {
       System.out.println("Something went wrong reading or writing to the filesystem.");
       System.out.println("Please ensure a text file exists with the name you provided.");
+      System.out.println("Error details: " + ex.getMessage());
       System.exit(1);
     }
+    
     
     //Actually attempt to parse the file
     try {
