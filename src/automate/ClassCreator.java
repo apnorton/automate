@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 public class ClassCreator {
   //Regex parsing tools
   //The below regex describes the format: "<category>: <access char> <type> <name>(<arglist-optional>)"
-  private static final String linePatternStr = "(?<cat>field|method):\\s*(?<acs>[+x-])\\s*(?<typ>\\w*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
+  private static final String linePatternStr = 
+		  "(?<cat>field|method):\\s*(?<acs>[+x-])\\s*(?<typ>\\w*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
   private static final Pattern linePattern = Pattern.compile(linePatternStr);
   private static final Pattern argPattern = Pattern.compile("[,\\s]*(?<typ>\\w+)\\s*(?<nam>\\w+)");
   
@@ -65,7 +66,6 @@ public class ClassCreator {
       pw.println(); //Skip a between fields and constructor
       writeConstructor(classname, pw);
       
-      
       //Body of class
       writeMethods(pw);
       writeToString(pw);
@@ -93,13 +93,16 @@ public class ClassCreator {
     
   }
   
-  //Writes the "top matter"--common imports, comment template, and open class
+  //Writes the "top matter"-- package name TO-DO, common imports, comment template, and open class
   private static void writeTopMatter(PrintWriter pw, String classname) {
+	//Package
+	pw.println("//TODO package name\n");
     //Imports
     pw.println("import java.util.*;");
     
     //Comment header
-    pw.println("\n/*\n * File: " + classname + ".java\n * Author:\n * Email:\n * Desciption:\n */\n");
+    pw.println("\n/**\n * <B>File</B>: " + classname + ".java\n * <BR><B>Author</B>:\n * <BR><B>Email</B>:\n " +
+    		"* <BR><B>Description</B>:\n */");
     
     //Class declaration
     pw.println("public class " + classname + " {");
