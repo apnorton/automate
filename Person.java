@@ -1,10 +1,11 @@
-import java.util.*;
+package automate;
+
 
 /*
  * File: Person.java
  * Author:
  * Email:
- * Desciption:
+ * Description:
  */
 
 public class Person {

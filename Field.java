@@ -1,7 +1,5 @@
 package automate;
 
-import java.util.*;
-
 //A field consists of a variable and an access restriction
 public class Field {
   private Var variable;
@@ -21,7 +19,7 @@ public class Field {
   public String getAccess() { return access; }
   public Var getVar() { return variable; }
   
-  public boolean isPrimative() { return variable.isPrimative(); }
+  public boolean isPrimative() { return variable.isPrimitive(); }
   public String getNull() { return variable.getNull(); }
   
   @Override 
