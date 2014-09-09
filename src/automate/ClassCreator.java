@@ -1,8 +1,14 @@
 package automate;
 
-import java.util.*;
-import java.io.*;
-import java.util.regex.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ClassCreator {
   //Regex parsing tools

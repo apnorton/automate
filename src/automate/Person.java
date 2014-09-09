@@ -1,6 +1,5 @@
 package automate;
 
-
 /*
  * File: Person.java
  * Author:

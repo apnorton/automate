@@ -1,6 +1,7 @@
 package automate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 //A method consists of an access restriction, return type, name, and list of arguments
 public class Method {
