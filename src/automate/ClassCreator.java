@@ -13,12 +13,9 @@ import java.util.regex.Pattern;
 public class ClassCreator {
   //Regex parsing tools
   //The below regex describes the format: "<category>: <access char> <type> <name>(<arglist-optional>)"
-<<<<<<< HEAD:src/automate/ClassCreator.java
-  private static final String linePatternStr = 
-		  "(?<cat>field|method):\\s*(?<acs>[+x-])\\s*(?<typ>\\w*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
-=======
+
   private static final String linePatternStr = "(?<cat>field|method):\\s*(?<acs>[+x-])\\s*(?<typ>[\\w<>]*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
->>>>>>> upstream/master:ClassCreator.java
+
   private static final Pattern linePattern = Pattern.compile(linePatternStr);
   private static final Pattern argPattern = Pattern.compile("[,\\s]*(?<typ>[\\w<>]+)\\s*(?<nam>\\w+)");
   
