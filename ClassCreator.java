@@ -166,7 +166,7 @@ public class ClassCreator {
     pw.print(tab + tab + "return (\"[ ");
     
     for (Field f : fields) {
-      pw.print(f.getName() + "=\" + " + f.getName() + " + \"");
+      pw.print(f.getName() + "=\" + " + f.getName() + " + \" ");
     }
     pw.println("]\");");
     pw.println(tab + "}\n");
@@ -194,7 +194,7 @@ public class ClassCreator {
     while(fI.hasNext()) {
       f = fI.next();
       
-      if (f.isPrimative())
+      if (f.isPrimitive())
         pw.print("(this." + f.getName() + " == that." + f.getName() + ")");
       else
         pw.print("((this." + f.getName() + ").equals(that." + f.getName() + "))");
