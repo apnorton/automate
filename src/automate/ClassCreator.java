@@ -177,7 +177,7 @@ public class ClassCreator {
     pw.print(tab + tab + "return (\"[ ");
     
     for (Field f : fields) {
-      pw.print(f.getName() + "=\" + " + f.getName() + " + \"");
+      pw.print(f.getName() + "=\" + " + f.getName() + " + \" ");
     }
     pw.println("]\");");
     pw.println(tab + "}\n");
