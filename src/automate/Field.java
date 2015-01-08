@@ -19,7 +19,7 @@ public class Field {
   public String getAccess() { return access; }
   public Var getVar() { return variable; }
   
-  public boolean isPrimative() { return variable.isPrimitive(); }
+  public boolean isPrimitive() { return variable.isPrimitive(); }
   public String getNull() { return variable.getNull(); }
   
   @Override 

@@ -28,7 +28,6 @@ $RECYCLE.BIN/
 # Icon must ends with two \r.
 Icon
 
-
 # Thumbnails
 ._*
 
@@ -41,3 +40,6 @@ Icon
 .project
 .settings/
 bin/
+
+# Generated files
+Person.java
