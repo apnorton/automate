@@ -1,7 +1,5 @@
 package automate;
 
-import java.util.*;
-
 //A field consists of a variable and an access restriction
 public class Field {
   private Var variable;

@@ -1,13 +1,22 @@
 package automate;
 
-import java.util.*;
-import java.io.*;
-import java.util.regex.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ClassCreator {
+	
   //Regex parsing tools
   //The below regex describes the format: "<category>: <access char> <type> <name>(<arglist-optional>)"
-  private static final String linePatternStr = "(?<cat>field|method):\\s*(?<acs>[+x-])\\s*(?<typ>[\\w<>]*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
+  private static final String linePatternStr =
+		  "(?<cat>field|method):\\s*(?<acs>[+x-])\\s*(?<typ>[\\w<>]*)\\s*(?<nam>\\w*)\\s*(\\((?<args>.*?)\\))?\\s*";
+
   private static final Pattern linePattern = Pattern.compile(linePatternStr);
   private static final Pattern argPattern = Pattern.compile("[,\\s]*(?<typ>[\\w<>]+)\\s*(?<nam>\\w+)");
   
@@ -24,8 +33,8 @@ public class ClassCreator {
     
     //Check for command line args, then find the class name
     if (args.length != 1) {
-      System.out.println("Usage: java automate.ClassCreator filename");
-      System.out.println("It appears you have not provided a filename to load, please try again.");
+      System.err.println("Usage: java automate.ClassCreator filename");
+      System.err.println("It appears you have not provided a filename to load, please try again.");
       System.exit(1);
     }
     classname = args[0];
@@ -38,12 +47,12 @@ public class ClassCreator {
       fin = new Scanner(textfile);
       pw = new PrintWriter(classname + ".java");
     } catch (FileNotFoundException ex) {
-      System.out.println("The file " + textfile.getAbsolutePath() + " does not exist.");
+      System.err.println("The file " + textfile.getAbsolutePath() + " does not exist.");
       System.exit(1);
     } catch (Exception ex) {
-      System.out.println("Something went wrong reading or writing to the filesystem.");
-      System.out.println("Please ensure a text file exists with the name you provided.");
-      System.out.println("Error details: " + ex.getMessage());
+      System.err.println("Something went wrong reading or writing to the filesystem.");
+      System.err.println("Please ensure a text file exists with the name you provided.");
+      System.err.println("Error details: " + ex.getMessage());
       System.exit(1);
     }
     
@@ -58,7 +67,6 @@ public class ClassCreator {
       writeFields(pw);
       pw.println(); //Skip a between fields and constructor
       writeConstructor(classname, pw);
-      
       
       //Body of class
       writeMethods(pw);
@@ -77,8 +85,8 @@ public class ClassCreator {
       pw.close();
     }
     catch (Exception ex) {  //Catch-all.
-      System.out.println("Exception thrown.  All we know is:");
-      System.out.println(ex.getMessage());
+      System.err.println("Exception thrown.  All we know is:");
+      System.err.println(ex.getMessage());
       System.exit(1);
     }
     
@@ -87,13 +95,16 @@ public class ClassCreator {
     
   }
   
-  //Writes the "top matter"--common imports, comment template, and open class
+  //Writes the "top matter"-- package name TO-DO, common imports, comment template, and open class
   private static void writeTopMatter(PrintWriter pw, String classname) {
+	//Package
+	pw.println("//TODO package name\n");
     //Imports
     pw.println("import java.util.*;");
     
     //Comment header
-    pw.println("\n/*\n * File: " + classname + ".java\n * Author:\n * Email:\n * Desciption:\n */\n");
+    pw.println("\n/**\n * <B>File</B>: " + classname + ".java\n * <BR><B>Author</B>:\n * <BR><B>Email</B>:\n " +
+    		"* <BR><B>Description</B>:\n */");
     
     //Class declaration
     pw.println("public class " + classname + " {");

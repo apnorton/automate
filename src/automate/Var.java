@@ -1,7 +1,5 @@
 package automate;
 
-import java.util.*;
-
 //A variable consists of a name and a datatype
 public class Var {
   //These associate primitive types with their associated "null" element... DON'T alter one without altering the other!
